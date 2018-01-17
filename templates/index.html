@@ -1,33 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-  <head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Pay David</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom fonts for this template -->
-    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
-    <!-- <link rel="stylesheet" href="vendor/simple-line-icons/css/simple-line-icons.css"> -->
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
-
-    <!-- Plugin CSS -->
-    <link rel="stylesheet" href="device-mockups/device-mockups.min.css">
-
-    <!-- Custom styles for this template -->
-    <link href="css/new-age.min.css" rel="stylesheet">
-
-  </head>
-
+  {% extends "layout.html" %}
+  {% block content %}
   <body id="page-top">
 
     <!-- Navigation -->
@@ -72,7 +44,7 @@
                 <div class="device">
                   <div class="screen">
                     <!-- Demo image for screen mockup, you can put an image here, some HTML, an animation, video, or anything else! -->
-                    <img src="img/demo-screen-1.jpg" class="img-fluid" alt="">
+                    <img src="{{ url_for('static', filename='img/demo-screen-1.jpg') }}" class="img-fluid" alt="">
                   </div>
                   <div class="button">
                     <!-- You can hook the "home button" to some JavaScript events or just remove it -->
@@ -248,97 +220,15 @@
     </footer>
 
     <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
     <!-- Custom scripts for this template -->
-    <script src="js/new-age.min.js"></script>
+    <script src="{{ url_for('static', filename='js/new-age.min.js') }}"></script>
 
     <!-- Stripe script -->
     <script src="https://js.stripe.com/v3/"></script>
-
-    <script>
-    $(document).ready(function(){
-      // Stripe payment JS
-      // Step 1: Create card element (replace key below with account key)
-      // Create a Stripe client
-      var stripe = Stripe('pk_test_ElBQzyLjVbA3wHv9JDe82TIU');
-      // Create an instance of Elements
-      var elements = stripe.elements();
-
-      // Step 2: Create an instance of an Element and mount it to the HTML Element container (payment form)
-      // Custom styling can be passed to options when creating an Element.
-      var style = {
-        base: {
-          color: '#32325d',
-          lineHeight: '18px',
-          // lineHeight: '1.429'
-          fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-          fontSmoothing: 'antialiased',
-          fontSize: '16px',
-          // fontSize: '1.11'
-          '::placeholder': {
-            color: '#aab7c4'
-          }
-        },
-        invalid: {
-          color: '#fa755a',
-          iconColor: '#fa755a'
-        }
-      };
-
-      // Create an instance of the card Element
-      var card = elements.create('card', {style: style});
-
-      // Add an instance of the card Element into the `card-element` <div>
-      card.mount('#card-element');
-
-      // Step 3: Error catching
-      card.addEventListener('change', function(event) {
-      var displayError = document.getElementById('card-errors');
-      if (event.error) {
-          displayError.textContent = event.error.message;
-        } else {
-          displayError.textContent = '';
-        }
-      });
-
-      // Step 4: Handle form submission
-      var form = document.getElementById('payment-form');
-      form.addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        stripe.createToken(card).then(function(result) {
-          if (result.error) {
-            // Inform the user if there was an error
-            var errorElement = document.getElementById('card-errors');
-            errorElement.textContent = result.error.message;
-          } else {
-            // Send the token to your server
-            stripeTokenHandler(result.token);
-          }
-        });
-      });
-
-      //Step 5: Submit the token and form to Server
-      function stripeTokenHandler(token) {
-        // Insert the token ID into the form so it gets submitted to the server
-        var form = document.getElementById('payment-form');
-        var hiddenInput = document.createElement('input');
-        hiddenInput.setAttribute('type', 'hidden');
-        hiddenInput.setAttribute('name', 'stripeToken');
-        hiddenInput.setAttribute('value', token.id);
-        form.appendChild(hiddenInput);
-
-        // Submit the form
-        form.submit();
-      }
-    });
-    </script>
-
-  </body>
-
-</html>
+{% endblock %}

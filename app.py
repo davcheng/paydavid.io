@@ -28,17 +28,100 @@ def charge():
     amount = 999
 
     customer = stripe.Customer.create(
-        email='customer@example.com',
+        email='customer@example.com', # pass in from login?
         source=request.form['stripeToken']
     )
-
+    # print(customer)
     charge = stripe.Charge.create(
         customer=customer.id,
         amount=amount,
         currency='usd',
-        description='Flask Charge'
+        description='pay david'
     )
 
+    subscription = stripe.Subscription.create(
+      customer=customer.id,
+      items=[
+        {
+          "plan": "basic-monthly",
+        },
+      ],
+    )
+    print(subscription)
+
+    return render_template('charge.html', amount=amount)
+
+
+@app.route('/sub', methods=['POST'])
+def sub():
+    amount = 1000000
+    customer = stripe.Customer.create(
+        email='customer@example.com', # pass in from login?
+        source=request.form['stripeToken']
+    )
+
+    subscription = stripe.Subscription.create(
+      customer=customer.id,
+      items=[
+        {
+          "plan": "basic-monthly",
+        },
+      ],
+    )
+    print(subscription)
+
+    return render_template('charge.html', amount=amount)
+
+# Subscriptions
+# Create plan via:
+# curl https://api.stripe.com/v1/plans \
+#    -u sk_test_bJ7tT1WKB1oFfqOyDAHn6vi3: \
+#    -d name="Basic Plan" \
+#    -d id=basic-monthly \
+#    -d interval=month \
+#    -d currency=usd \
+#    -d amount=999
+
+# app.route('/subscribe', methods=['POST'])
+# def subscribe(email, stripe_token, plan):
+#     print('sup')
+#     stripe.api_key = "sk_test_bJ7tT1WKB1oFfqOyDAHn6vi3"
+#
+#     customer = stripe.Customer.create(
+#       email=email,
+#       source=stripe_token,
+#       plan=plan
+#     )
+#
+#     stripe.Subscription.create(
+#       customer="cus_4fdAW5ftNQow1a",
+#       items=[
+#         {
+#           "plan": "basic-monthly",
+#         },
+#       ],
+#     )
+#     return render_template('charge.html', amount=amount)
+
+# app.route('/subscribe', methods=['POST'])
+def subscribe(email, stripe_token, plan):
+    print('sup')
+    stripe.api_key = "sk_test_bJ7tT1WKB1oFfqOyDAHn6vi3"
+
+    customer = stripe.Customer.create(
+      email=email,
+      source=stripe_token,
+      plan=plan
+    )
+
+    stripe.Subscription.create(
+      customer=customer.id,
+      items=[
+        {
+          "plan": "basic-monthly",
+        },
+      ],
+    )
     return render_template('charge.html', amount=amount)
 
 if __name__ == '__main__':

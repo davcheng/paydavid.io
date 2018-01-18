@@ -32,3 +32,17 @@ b. HTTPS so that stripe can work
 Update app.py to use ssl
 `if __name__ == '__main__':
     app.run('0.0.0.0', debug=True, port=8100, ssl_context='adhoc')` -->
+
+
+Deploy on AWS lambda
+https://joshuahoover.com/deploying-a-python-flask-web-app-on-aws-lambda/
+
+1. Setup Serverless and the Flaskr app locally
+`npm install -g serverless`
+`npm install --save serverless-wsgi`
+`serverless create --template aws-python` # creates serverless AWS Python template
+
+2. Modify SQLite code to run in Lambda (and locally)
+3. Configure the Serverless deployment
+4. Deploy to AWS
+5. Remove from AWS

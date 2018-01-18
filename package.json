@@ -30,6 +30,7 @@
     "font-awesome": "4.7.0",
     "jquery": "^3.2.1",
     "jquery.easing": "^1.4.1",
+    "serverless-wsgi": "^1.4.4",
     "simple-line-icons": "2.4.1"
   },
   "devDependencies": {
